@@ -12,6 +12,13 @@ public class Item {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
 
+    public Item(){}
+
+    public Item(String name, int quantity){
+        this.name = name;
+        this.quantity = quantity;
+    }
+
     private String name;
     private int quantity;
 

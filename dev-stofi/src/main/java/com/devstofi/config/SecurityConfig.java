@@ -42,14 +42,6 @@ public class SecurityConfig {
         this.rsaKeys = rsaKeys;
     }
 
-    @Bean
-    DataSource dataSource(){
-        return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .setName("dashboard")
-                .addScript(JdbcDaoImpl.DEFAULT_USER_SCHEMA_DDL_LOCATION)
-                .build();
-    }
 
     @Bean
     JdbcUserDetailsManager users(DataSource dataSource, PasswordEncoder encoder){
@@ -78,7 +70,6 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.ignoringAntMatchers("/h2-console/**"))
                 .authorizeRequests(auth ->{
                     auth.antMatchers("/").permitAll();
-                    auth.antMatchers("/h2-console/**").permitAll();
                     auth.antMatchers("/user**").hasAuthority("ROLE_USER");
                     auth.antMatchers("/admin**").hasAuthority("ROLE_ADMIN");
                 })
