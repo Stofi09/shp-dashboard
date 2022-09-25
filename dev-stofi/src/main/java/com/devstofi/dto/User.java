@@ -1,33 +1,45 @@
 package com.devstofi.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
 
-    private String username;
+    private String userName;
     private String password;
-    private String roles;
-    private String authorities;
-    private boolean enabled;
 
+    @OneToMany(mappedBy = "user")
+    private List<Authority> authority;
 
     public User(){};
 
-    public User(long id, String username, String password, String roles, String authorities, boolean enabled) {
+    public User(long id, String userName, String password, List<Authority> authority) {
         this.id = id;
-        this.username = username;
+        this.userName = userName;
         this.password = password;
-        this.roles = roles;
-        this.authorities = authorities;
-        this.enabled = enabled;
+        this.authority = authority;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authority;
+    }
+    public void setAuthority(Authority authority){
+        this.authority = new ArrayList<>();
+        this.authority.add(authority);
+    }
     public long getId() {
         return id;
     }
@@ -36,43 +48,45 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    @Override
     public String getPassword() {
-        return password;
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.userName;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRoles() {
-        return roles;
-    }
-
-    public void setRoles(String roles) {
-        this.roles = roles;
-    }
-
-    public String getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(String authorities) {
-        this.authorities = authorities;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 }
