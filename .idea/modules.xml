@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/dev-stofi/dev-stofi.iml" filepath="$PROJECT_DIR$/dev-stofi/dev-stofi.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/shp-dashboard.iml" filepath="$PROJECT_DIR$/.idea/shp-dashboard.iml" />
     </modules>
   </component>
