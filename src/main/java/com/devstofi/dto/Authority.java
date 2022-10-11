@@ -4,18 +4,24 @@ package com.devstofi.dto;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "authorities")
 public class Authority implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
-    private User user;
+    @ManyToMany
+    @JoinTable(
+            name = "user_authority",
+            joinColumns = @JoinColumn(name = "authority_id"),
+            inverseJoinColumns = @JoinColumn(name = "users_id")
+    )
+    Set<User> users = new HashSet<>();
     private String authority;
 
     public Authority(){};
@@ -40,11 +46,11 @@ public class Authority implements GrantedAuthority {
         this.authority = authority;
     }
 
-    public User getUser() {
-        return user;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }

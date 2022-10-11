@@ -13,5 +13,5 @@ import java.util.List;
 @Configuration
 public interface UserRepository extends JpaRepository <User,Long >{
     List<User> findAll();
-
+    User findByUserName(String userName);
 }

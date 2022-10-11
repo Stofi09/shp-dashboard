@@ -1,13 +1,12 @@
 package com.devstofi.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -20,25 +19,26 @@ public class User implements UserDetails {
     private String userName;
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    private List<Authority> authority;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users", cascade = CascadeType.ALL)
+    Set<Authority> authorities = new HashSet<>();
 
     public User(){};
 
-    public User(long id, String userName, String password, List<Authority> authority) {
+    public User(long id, String userName, String password, HashSet<Authority> authority) {
         this.id = id;
         this.userName = userName;
         this.password = password;
-        this.authority = authority;
+        this.authorities = authority;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authority;
+        return authorities;
     }
     public void setAuthority(Authority authority){
-        this.authority = new ArrayList<>();
-        this.authority.add(authority);
+        this.authorities.add(authority);
     }
     public long getId() {
         return id;

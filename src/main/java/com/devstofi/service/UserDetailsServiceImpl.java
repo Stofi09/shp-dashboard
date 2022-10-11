@@ -23,14 +23,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Authority auth2 = authRepo.findByAuthority("ROLE_ADMIN");
-        User user = new User();
-        user.setUserName("user");
-        user.setPassword(passwordEncoder2().encode("user"));
-        user.setId(50L);
-        user.setAuthority(auth2);
-        System.out.println(user.getAuthorities());
-        return (UserDetails) user;
+        System.out.println("USERNAME: "+username);
+        User user2 = userRepo.findByUserName("user");
+        return (UserDetails) user2;
     }
 
     @Bean
